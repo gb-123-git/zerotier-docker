@@ -1,3 +1,4 @@
+## Adding of HealthCheck has been sponsored by PMGA Tech LLP.
 #!/bin/sh
 
 #Exit Codes
