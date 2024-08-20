@@ -1,3 +1,4 @@
+
 ARG ALPINE_IMAGE=alpine
 ARG ALPINE_VERSION=3.20
 ARG ZT_COMMIT=91e7ce87f09ac1cfdeaf6ff22c3cedcd93574c86
@@ -28,6 +29,7 @@ LABEL org.opencontainers.image.title="zerotier" \
       org.opencontainers.image.source="https://github.com/zyclonite/zerotier-docker"
 
 COPY --from=builder /src/zerotier-one /scripts/entrypoint.sh /usr/sbin/
+COPY --from=builder --chmod=755 /scripts/healthcheck.sh /usr/sbin/
 
 RUN apk add --no-cache --purge --clean-protected libc6-compat libstdc++ \
   && mkdir -p /var/lib/zerotier-one \
@@ -37,6 +39,9 @@ RUN apk add --no-cache --purge --clean-protected libc6-compat libstdc++ \
 
 EXPOSE 9993/udp
 
+HEALTHCHECK --interval=60s --timeout=8s \
+        CMD /bin/sh /usr/sbin/healthcheck.sh
+        
 ENTRYPOINT ["entrypoint.sh"]
 
 CMD ["-U"]
