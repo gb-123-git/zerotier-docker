@@ -7,7 +7,7 @@
 
 status=$(zerotier-cli status | awk '{print $5}')
 
-if [[ $status = "ONLINE" ]]; then
+if [[ "$status" = "ONLINE" ]] ; then
     exit 0
 else
     exit 1
